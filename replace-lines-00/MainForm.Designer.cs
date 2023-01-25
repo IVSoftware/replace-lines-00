@@ -30,9 +30,9 @@
         {
             this.textBoxMultiline = new System.Windows.Forms.TextBox();
             this.buttonLoad = new System.Windows.Forms.Button();
-            this.buttonReplace = new System.Windows.Forms.Button();
-            this.buttonRemove = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.buttonSave = new System.Windows.Forms.Button();
+            this.comboBox = new System.Windows.Forms.ComboBox();
+            this.textBoxEditor = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // textBoxMultiline
@@ -40,55 +40,55 @@
             this.textBoxMultiline.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxMultiline.Location = new System.Drawing.Point(191, 48);
+            this.textBoxMultiline.BackColor = System.Drawing.Color.Azure;
+            this.textBoxMultiline.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBoxMultiline.Location = new System.Drawing.Point(22, 72);
             this.textBoxMultiline.Multiline = true;
             this.textBoxMultiline.Name = "textBoxMultiline";
-            this.textBoxMultiline.Size = new System.Drawing.Size(375, 384);
+            this.textBoxMultiline.Size = new System.Drawing.Size(544, 414);
             this.textBoxMultiline.TabIndex = 0;
             // 
             // buttonLoad
             // 
-            this.buttonLoad.Location = new System.Drawing.Point(22, 52);
+            this.buttonLoad.Location = new System.Drawing.Point(22, 13);
             this.buttonLoad.Name = "buttonLoad";
-            this.buttonLoad.Size = new System.Drawing.Size(137, 34);
+            this.buttonLoad.Size = new System.Drawing.Size(88, 34);
             this.buttonLoad.TabIndex = 1;
             this.buttonLoad.Text = "Load";
             this.buttonLoad.UseVisualStyleBackColor = true;
             // 
-            // buttonReplace
+            // buttonSave
             // 
-            this.buttonReplace.Location = new System.Drawing.Point(22, 92);
-            this.buttonReplace.Name = "buttonReplace";
-            this.buttonReplace.Size = new System.Drawing.Size(137, 34);
-            this.buttonReplace.TabIndex = 1;
-            this.buttonReplace.Text = "Replace";
-            this.buttonReplace.UseVisualStyleBackColor = true;
+            this.buttonSave.Location = new System.Drawing.Point(446, 13);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(105, 34);
+            this.buttonSave.TabIndex = 1;
+            this.buttonSave.Text = "Save";
+            this.buttonSave.UseVisualStyleBackColor = true;
             // 
-            // buttonRemove
+            // comboBox
             // 
-            this.buttonRemove.Location = new System.Drawing.Point(22, 132);
-            this.buttonRemove.Name = "buttonRemove";
-            this.buttonRemove.Size = new System.Drawing.Size(137, 34);
-            this.buttonRemove.TabIndex = 1;
-            this.buttonRemove.Text = "Remove";
-            this.buttonRemove.UseVisualStyleBackColor = true;
+            this.comboBox.FormattingEnabled = true;
+            this.comboBox.Location = new System.Drawing.Point(116, 14);
+            this.comboBox.Name = "comboBox";
+            this.comboBox.Size = new System.Drawing.Size(153, 33);
+            this.comboBox.TabIndex = 2;
             // 
-            // comboBox1
+            // textBoxEditor
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(22, 9);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(375, 33);
-            this.comboBox1.TabIndex = 2;
+            this.textBoxEditor.Location = new System.Drawing.Point(275, 16);
+            this.textBoxEditor.Name = "textBoxEditor";
+            this.textBoxEditor.Size = new System.Drawing.Size(165, 31);
+            this.textBoxEditor.TabIndex = 3;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(578, 444);
-            this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.buttonRemove);
-            this.Controls.Add(this.buttonReplace);
+            this.ClientSize = new System.Drawing.Size(578, 498);
+            this.Controls.Add(this.textBoxEditor);
+            this.Controls.Add(this.comboBox);
+            this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.buttonLoad);
             this.Controls.Add(this.textBoxMultiline);
             this.Name = "MainForm";
@@ -102,8 +102,8 @@
 
         private TextBox textBoxMultiline;
         private Button buttonLoad;
-        private Button buttonReplace;
-        private Button buttonRemove;
-        private ComboBox comboBox1;
+        private Button buttonSave;
+        private ComboBox comboBox;
+        private TextBox textBoxEditor;
     }
 }

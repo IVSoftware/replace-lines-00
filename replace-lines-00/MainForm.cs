@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using static System.Windows.Forms.LinkLabel;
 
 namespace replace_lines_00
@@ -9,13 +10,34 @@ namespace replace_lines_00
         public MainForm()
         {
             InitializeComponent();
+            textBoxMultiline.ReadOnly= true;
             openFileDialog.FileOk += onFileOK;
             Disposed += (sender, e) => openFileDialog.Dispose();
-            comboBox1.DataSource = lines;
-
+            comboBox.DataSource = lines;
+            lines.ListChanged += onListChanged;
+            comboBox.SelectedIndexChanged += onComboBoxSelectedIndexChanged;
+            textBoxEditor.TextChanged += onEditorTextChanged;
             buttonLoad.Click += onClickLoad;
-            buttonReplace.Click += onClickModify;
-            buttonRemove.Click += onClickRemove;      
+            buttonSave.Click += onClickSave;
+        }
+
+        private void onListChanged(object? sender, ListChangedEventArgs e)
+        {
+            switch (e.ListChangedType)
+            {
+                case ListChangedType.ItemChanged:
+                    textBoxMultiline.Lines = lines.Select(_=>_.Serialized).ToArray();
+                    break;
+            }
+        }
+
+        private void onEditorTextChanged(object? sender, EventArgs e)
+        {
+            var item = (Line)comboBox.SelectedItem;
+            if (item != null)
+            {
+                item[0] = textBoxEditor.Text;
+            }
         }
 
         BindingList<Line> lines = new BindingList<Line>();
@@ -40,58 +62,49 @@ namespace replace_lines_00
             {
                 lines.Add(new Line(encoded));
             }
-            textBoxMultiline.Lines = lines.Select(_=>_.Raw).ToArray();
-            comboBox1.SelectedIndex = -1;
+            textBoxMultiline.Lines = lines.Select(_=>_.Serialized).ToArray();
+            comboBox.SelectedIndex = -1;
         }
-
-
-
-
-
-
-
-
-        private void onClickModify(object? sender, EventArgs e)
+        private void onClickSave(object? sender, EventArgs e)
         {
-            //lines[0] = "john;;;100;;;0;";
-            //lines[1] = "Patrick;;;100;;;1;";
-            //lines[2] = "firstName;;;100;;;2;";
-            //textBoxMultiline.Lines = lines.ToArray();
-        }
-
-        private void onClickRemove(object? sender, EventArgs e)
-        {
-            //for (int i = 0; i < 3; i++)
-            //{
-            //    if (lines.Any())
-            //    {
-            //        lines.RemoveAt(lines.Count - 1);
-            //    }
-            //    else break;
-            //}
-            //textBoxMultiline.Lines = lines.ToArray();
         }
 
         private void onComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            var item = (string)comboBox1.SelectedItem;
+            var item = (Line)comboBox.SelectedItem;
             if (item != null)
             {
-                string[] r = item.Split(new string[] { ";;;" }, StringSplitOptions.None);
-                textBoxMultiline.AppendText($"{r[0]}{Environment.NewLine}");
+                textBoxEditor.Text = item[0];
             }
         }
     }
 
-    class Line
+    class Line : INotifyPropertyChanged
     {
-        public Line(string text)
+        public Line(string serialized)
         {
-            Elements = text.Split(new string[] { ";;;" }, StringSplitOptions.None);
+            _deserialized = serialized.Split(new string[] { ";;;" }, StringSplitOptions.None);
         }
-        public string[] Elements { get; }
-        public string Raw => string.Join(";;;", Elements);
-        public string FormatForSave() => Raw;
-        public override string ToString() => Elements[1].ToString();
+        public string this[int index]
+        {
+            get => _deserialized[index];
+            set
+            {
+                if(!Equals(_deserialized[index],value))
+                {
+                    _deserialized[index] = value;
+                    OnPropertyChanged($"{index}");
+                }
+            }
+        }
+        private string[] _deserialized { get; }
+        public string Serialized => string.Join(";;;", _deserialized);
+        public override string ToString() => _deserialized[1].ToString();
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
     }
 }
