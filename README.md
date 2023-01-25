@@ -34,6 +34,7 @@ In the main form CTor
         .
         Disposed += (sender, e) => openFileDialog.Dispose();
     }
+    BindingList<Line> lines = new BindingList<Line>();
     private void onClickLoad(object? sender, EventArgs e) =>
         openFileDialog.ShowDialog();
 

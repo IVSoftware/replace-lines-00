@@ -21,6 +21,7 @@ namespace replace_lines_00
             Disposed += (sender, e) => openFileDialog.Dispose();
             comboBox.DropDownStyle= ComboBoxStyle.DropDownList;
         }
+        BindingList<Line> lines = new BindingList<Line>();
 
         private void onListChanged(object? sender, ListChangedEventArgs e)
         {
@@ -40,8 +41,6 @@ namespace replace_lines_00
                 item[0] = textBoxEditor.Text;
             }
         }
-
-        BindingList<Line> lines = new BindingList<Line>();
 
         private OpenFileDialog openFileDialog = new OpenFileDialog
         {
