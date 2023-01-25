@@ -10,15 +10,16 @@ namespace replace_lines_00
         public MainForm()
         {
             InitializeComponent();
-            textBoxMultiline.ReadOnly= true;
             openFileDialog.FileOk += onFileOK;
-            Disposed += (sender, e) => openFileDialog.Dispose();
+            buttonLoad.Click += onClickLoad;
             comboBox.DataSource = lines;
-            lines.ListChanged += onListChanged;
             comboBox.SelectedIndexChanged += onComboBoxSelectedIndexChanged;
             textBoxEditor.TextChanged += onEditorTextChanged;
-            buttonLoad.Click += onClickLoad;
+            lines.ListChanged += onListChanged;
             buttonSave.Click += onClickSave;
+            textBoxMultiline.ReadOnly= true;
+            Disposed += (sender, e) => openFileDialog.Dispose();
+            comboBox.DropDownStyle= ComboBoxStyle.DropDownList;
         }
 
         private void onListChanged(object? sender, ListChangedEventArgs e)
@@ -58,9 +59,9 @@ namespace replace_lines_00
         private void onFileOK(object? sender, CancelEventArgs e)
         {
             lines.Clear();
-            foreach (var encoded in File.ReadAllLines(openFileDialog.FileName))
+            foreach (var serialized in File.ReadAllLines(openFileDialog.FileName))
             {
-                lines.Add(new Line(encoded));
+                lines.Add(new Line(serialized));
             }
             textBoxMultiline.Lines = lines.Select(_=>_.Serialized).ToArray();
             comboBox.SelectedIndex = -1;
@@ -105,6 +106,5 @@ namespace replace_lines_00
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
     }
 }
