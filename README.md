@@ -42,7 +42,7 @@ In a minute, we'll look at those three things step by step. But first...
 ***
 **Serialize and Deserialize**
 
-There's a lot of loose code doing string splits to decode your serializer format. This might be better to encapsulate in a class that is suitable to be used in a `BindingList<Line>` that is the data source of your combo box.
+You have a lot of loose code doing string splits to decode your serializer format. Try encapsulating the SerDes instead. To do this, make a class that is also suitable to be used in a `BindingList<Line>`. This will be the data source of your combo box.
 
     class Line : INotifyPropertyChanged
     {
