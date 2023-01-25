@@ -18,7 +18,7 @@ namespace replace_lines_00
             buttonRemove.Click += onClickRemove;      
         }
 
-        BindingList<string> lines = new BindingList<string>();
+        BindingList<Line> lines = new BindingList<Line>();
 
         private OpenFileDialog openFileDialog = new OpenFileDialog
         {
@@ -36,26 +36,11 @@ namespace replace_lines_00
         private void onFileOK(object? sender, CancelEventArgs e)
         {
             lines.Clear();
-            foreach (var line in File.ReadAllLines(openFileDialog.FileName))
+            foreach (var encoded in File.ReadAllLines(openFileDialog.FileName))
             {
-                lines.Add(line);
+                lines.Add(new Line(encoded));
             }
-#if false
-            // Doesn't seem to do anything
-            List<string> result = new List<string>();
-            string[] par = new string[1];
-            par[0] = ";;;";
-            for (int i = 0; i < lines.Count; i++)
-            {
-                string[] row = lines[i].Split(par, StringSplitOptions.None);
-                if (row.Length > 2)
-                {
-                    if (!result.Contains(row[1]))
-                        result.Add(row[1]);
-                }
-            }
-#endif
-
+            textBoxMultiline.Lines = lines.Select(_=>_.Raw).ToArray();
             comboBox1.SelectedIndex = -1;
         }
 
@@ -68,24 +53,23 @@ namespace replace_lines_00
 
         private void onClickModify(object? sender, EventArgs e)
         {
-            // The list can be modified with indexer[N] syntax.
-            lines[0] = "john;;;100;;;0;";
-            lines[1] = "Patrick;;;100;;;1;";
-            lines[2] = "firstName;;;100;;;2;";
-            textBoxMultiline.Lines = lines.ToArray();
+            //lines[0] = "john;;;100;;;0;";
+            //lines[1] = "Patrick;;;100;;;1;";
+            //lines[2] = "firstName;;;100;;;2;";
+            //textBoxMultiline.Lines = lines.ToArray();
         }
 
         private void onClickRemove(object? sender, EventArgs e)
         {
-            for (int i = 0; i < 3; i++)
-            {
-                if (lines.Any())
-                {
-                    lines.RemoveAt(lines.Count - 1);
-                }
-                else break;
-            }
-            textBoxMultiline.Lines = lines.ToArray();
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    if (lines.Any())
+            //    {
+            //        lines.RemoveAt(lines.Count - 1);
+            //    }
+            //    else break;
+            //}
+            //textBoxMultiline.Lines = lines.ToArray();
         }
 
         private void onComboBoxSelectedIndexChanged(object sender, EventArgs e)
@@ -97,5 +81,17 @@ namespace replace_lines_00
                 textBoxMultiline.AppendText($"{r[0]}{Environment.NewLine}");
             }
         }
+    }
+
+    class Line
+    {
+        public Line(string text)
+        {
+            Elements = text.Split(new string[] { ";;;" }, StringSplitOptions.None);
+        }
+        public string[] Elements { get; }
+        public string Raw => string.Join(";;;", Elements);
+        public string FormatForSave() => Raw;
+        public override string ToString() => Elements[1].ToString();
     }
 }
